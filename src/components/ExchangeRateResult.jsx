@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -8,6 +9,9 @@ const mapStateToProps = (state) => {
 };
 
 class ExchangeRateResult extends React.Component {
+  method1() {
+  }
+
   render() {
     const { currency1, currency2 } = this.props;
     return (
@@ -21,3 +25,4 @@ class ExchangeRateResult extends React.Component {
 }
 
 export default connect(mapStateToProps)(ExchangeRateResult);
+/* eslint-enable */

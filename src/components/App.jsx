@@ -22,7 +22,7 @@ class App extends React.Component {
   render() {
     const { allIds, exchangeDataState } = this.props;
 
-    if (exchangeDataState !== 'fulfilled') {
+    if (exchangeDataState !== 'success') {
       return <div><h2>Loading...</h2></div>;
     }
     return (

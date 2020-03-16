@@ -16,55 +16,51 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const actionCreators = {
-  changeCurrencyName: actions.changeCurrency,
-  changeCurrencyAmount: actions.changeCurrencyAmount,
+  changeCurrencyName: actions.changeCurrencyName,
+  changeCurrencyValue: actions.changeCurrencyValue,
 };
 
 class ExchangeRateForm extends React.Component {
-  handleCurrencyAmountChange(fieldName, value) {
+  handleCurrencyValueChange(field, value) {
     const { formData, ratesById } = this.props;
 
-    const targetName = (fieldName === 'currencyName1') ? 'currencyName2' : 'currencyName1';
-    const currentValueName = (fieldName === 'currencyName1') ? 'currencyValue1' : 'currencyValue2';
-    const targetValueName = (fieldName === 'currencyName1') ? 'currencyValue2' : 'currencyValue1';
-    const target = formData[targetName];
-    const current = formData[fieldName];
+    const target = (field === 1) ? 2 : 1;
+    const targetName = formData[field].currency;
+    const currentName = formData[target].currency;
 
-    const result = calculateValue(value, ratesById[target], ratesById[current]);
+    const targetValue = calculateValue(value, ratesById[currentName], ratesById[targetName]);
 
-    this.changeCurrencyAmount(targetValueName, result);
-    this.changeCurrencyAmount(currentValueName, value);
+    this.changeCurrencyValue(field, value);
+    this.changeCurrencyValue(target, targetValue);
   }
 
-  handleCurrencyNameChange(fieldName, value) {
+  handleCurrencyNameChange(field, value) {
     const { changeCurrencyName, formId } = this.props;
-    changeCurrencyName({ fieldName, value, id: formId });
+    changeCurrencyName({ field, value, id: formId });
   }
 
-  changeCurrencyAmount(fieldName, value) {
-    const { changeCurrencyAmount, formId } = this.props;
-    changeCurrencyAmount({ fieldName, value, id: formId });
+  changeCurrencyValue(field, value) {
+    const { changeCurrencyValue, formId } = this.props;
+    changeCurrencyValue({ field, value, id: formId });
   }
 
   renderForm(id) {
     const { formData, ratesById } = this.props;
-    const fieldName1 = `currencyValue${id}`;
-    const fieldName2 = `currencyName${id}`;
     const currencies = Object.keys(ratesById);
 
     return (
       <div className="flex_inline" key={id}>
         <input
-          value={formData[fieldName1]}
+          value={formData[id].value}
           onChange={({ target: { value } }) => {
-            this.handleCurrencyAmountChange(fieldName2, value);
+            this.handleCurrencyValueChange(id, value);
           }}
         />
         <div>
           <Combobox
             data={currencies}
-            value={formData[fieldName2]}
-            onChange={value => this.handleCurrencyNameChange(fieldName2, value)}
+            value={formData[id].currency}
+            onChange={value => this.handleCurrencyNameChange(id, value)}
             filter="contains"
           />
         </div>

@@ -6,27 +6,31 @@ import * as actions from '../actions';
 const defaultState = {
   byId: {
     form1: {
-      currencyName1: 'RUB',
-      currencyName2: 'USD',
-      currencyValue1: '',
-      currencyValue2: '',
+      1: {
+        currency: 'RUB',
+        value: '',
+      },
+      2: {
+        currency: 'USD',
+        value: '',
+      },
     },
   },
   allIds: ['form1'],
 };
 
 const exchangeRates = handleActions({
-  [actions.changeCurrency](state, { payload: { value, fieldName, id } }) {
+  [actions.changeCurrencyName](state, { payload: { value, field, id } }) {
     const { byId, allIds } = state;
     return {
-      byId: { ...byId, [id]: { ...byId[id], [fieldName]: value } },
+      byId: { ...byId, [id]: { ...byId[id], [field]: { ...byId[id][field], currency: value } } },
       allIds,
     };
   },
-  [actions.changeCurrencyAmount](state, { payload: { value, fieldName, id } }) {
+  [actions.changeCurrencyValue](state, { payload: { value, field, id } }) {
     const { byId, allIds } = state;
     return {
-      byId: { ...byId, [id]: { ...byId[id], [fieldName]: value } },
+      byId: { ...byId, [id]: { ...byId[id], [field]: { ...byId[id][field], value } } },
       allIds,
     };
   },
@@ -47,17 +51,17 @@ const exchangeData = handleActions({
   },
   [actions.updateCurrencyRateRequest](state) {
     return {
-      ...state, state: 'pending',
+      ...state, state: 'requested',
     };
   },
   [actions.updateCurrencyRateSuccess](state) {
     return {
-      ...state, state: 'fulfilled',
+      ...state, state: 'success',
     };
   },
   [actions.updateCurrencyRateFailure](state) {
     return {
-      ...state, state: 'rejected',
+      ...state, state: 'failure',
     };
   },
 }, { state: 'init' });
