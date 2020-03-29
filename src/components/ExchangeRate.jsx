@@ -1,8 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Combobox from 'react-widgets/lib/Combobox';
+import {
+  Col, Row, DropdownButton, Dropdown, InputGroup, FormControl,
+} from 'react-bootstrap';
 import * as actions from '../actions';
 import { calculateValue } from '../utils';
+import ExchangeRateResult from './ExchangeRateResult';
 
 const mapStateToProps = (state, ownProps) => {
   const { formId } = ownProps;
@@ -49,32 +52,53 @@ class ExchangeRateForm extends React.Component {
     const currencies = Object.keys(ratesById);
 
     return (
-      <div className="flex_inline" key={id}>
-        <input
+      <InputGroup>
+        <FormControl
+          aria-label="Currency"
           value={formData[id].value}
           onChange={({ target: { value } }) => {
             this.handleCurrencyValueChange(id, value);
           }}
         />
-        <div>
-          <Combobox
-            data={currencies}
-            value={formData[id].currency}
-            onChange={value => this.handleCurrencyNameChange(id, value)}
-            filter="contains"
-          />
-        </div>
-      </div>
+
+        <DropdownButton
+          as={InputGroup.Append}
+          variant="outline-secondary"
+          title={formData[id].currency}
+        >
+          {currencies.map(item => (
+            <Dropdown.Item
+              as="button"
+              key={item}
+              onClick={(e) => {
+                e.preventDefault();
+                this.handleCurrencyNameChange(id, item);
+              }}
+            >
+              {item}
+            </Dropdown.Item>
+          ))}
+        </DropdownButton>
+      </InputGroup>
     );
   }
 
   render() {
-    const { formId } = this.props;
+    const { formId, formData } = this.props;
     return (
-      <form id={formId}>
-        {this.renderForm(1)}
-        {this.renderForm(2)}
-      </form>
+      <>
+        <Row as="form" id={formId}>
+          <Col>
+            {this.renderForm(1)}
+          </Col>
+          <Col>
+            {this.renderForm(2)}
+          </Col>
+        </Row>
+        <Row>
+          {ExchangeRateResult(formData[1], formData[2])}
+        </Row>
+      </>
     );
   }
 }

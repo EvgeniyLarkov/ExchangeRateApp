@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Row, Container, Spinner } from 'react-bootstrap';
 import * as actions from '../actions';
 import ExchangeRate from './ExchangeRate';
-// import ExchangeRateResult from './ExchangeRateResult';
 
 const mapStateToProps = state => ({
   allIds: state.exchangeRates.allIds,
@@ -23,12 +23,14 @@ class App extends React.Component {
     const { allIds, exchangeDataState } = this.props;
 
     if (exchangeDataState !== 'success') {
-      return <div><h2>Loading...</h2></div>;
+      return <Spinner animation="border" />;
     }
     return (
-      <div className="main">
-        {allIds.map(item => <ExchangeRate key={item} formId={item} />)}
-      </div>
+      <Container>
+        <Container fluid className="border border-grey rounded-bottom p-3">
+          {allIds.map(item => <Row as={ExchangeRate} formId={item} key={item} className="justify-content-md-center" />)}
+        </Container>
+      </Container>
     );
   }
 }

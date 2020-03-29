@@ -1,28 +1,18 @@
-/* eslint-disable */
 import React from 'react';
-import { connect } from 'react-redux';
+import { Col } from 'react-bootstrap';
 
-const mapStateToProps = (state) => {
-  const { currency1, currency2 } = state.exchangeRates.byId;
-  const props = { currency1, currency2 };
-  return props;
-};
+const exchangeRateResult = (currency1, currency2) => (
+  <Col as="span" className="text-center mt-3">
+    {currency1.value}
+    {' '}
+    {currency1.currency}
+    {' '}
+    is equal
+    {' '}
+    {currency2.value}
+    {' '}
+    {currency2.currency}
+  </Col>
+);
 
-class ExchangeRateResult extends React.Component {
-  method1() {
-  }
-
-  render() {
-    const { currency1, currency2 } = this.props;
-    return (
-      <div className="container inline-flex">
-        <div>{currency1.currency || '?'}</div>
-        <div>{'=>'}</div>
-        <div>{currency2.currency || '?'}</div>
-      </div>
-    );
-  }
-}
-
-export default connect(mapStateToProps)(ExchangeRateResult);
-/* eslint-enable */
+export default exchangeRateResult;
