@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap": "^4.4.1",
     "lodash": "^4.17.15",
     "mathjs": "^6.6.1",
